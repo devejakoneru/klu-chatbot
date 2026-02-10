@@ -60,8 +60,12 @@ def handle_user_query(query):
         return "text", response
 
     # ---- LIBRARY ----
+    # ---- LIBRARY ----
     if "library" in q or "book" in q:
-        return "text", data["library"]["timings"] + " " + data["library"]["books"]
+        lib = data.get("library", {})
+        timings = lib.get("timings", "Library timing information not available.")
+        books = lib.get("books", "Book borrowing information not available.")
+        return "text", f"{timings} {books}"
 
     # ---- OFFICIAL LINKS / PORTALS ----
     if (
