@@ -1,0 +1,95 @@
+{
+  "rules": {
+  "summary": "KL University has strict academic, conduct, hostel, and institutional rules that students must follow.",
+
+  "academic_conduct": {
+    "attendance": "A minimum of 85% attendance is mandatory for all courses to be eligible for semester-end examinations.",
+    "evaluation": "In-semester evaluations contribute a maximum of 50% to the total marks. Answer scripts are shown to students for verification.",
+    "integrity": "Students must maintain academic integrity and avoid malpractice in examinations."
+  },
+
+  "code_of_conduct": {
+    "discipline": "Strict silence and discipline must be maintained in classrooms, laboratories, and academic areas.",
+    "prohibited": "Ragging, smoking, alcohol consumption, and any form of indiscipline are strictly prohibited on campus.",
+    "dress_code": "Students are required to wear the prescribed uniform and follow the official dress code."
+  },
+
+  "hostel_rules": {
+    "prohibited_items": "Electrical appliances such as water heaters are strictly banned. Violations attract a fine of ₹500.",
+    "laptops": "Laptops are permitted only for academic purposes.",
+    "damages": "Students are responsible for damages to hostel property, and repair costs will be recovered."
+  },
+
+  "other_regulations": {
+    "library_mess": "Misuse of library or mess property leads to fines ranging from ₹100 to ₹300.",
+    "identity_cards": "Students must carry their identity cards at all times on campus.",
+    "vehicles": "Students must follow designated parking and vehicle regulations."
+  }
+},
+
+
+  "fees": {
+  "summary": "KL Deemed to be University fee structure varies based on program, campus, and facilities.",
+
+  "btech": {
+    "hyderabad": "B.Tech (4 years) fees at Hyderabad campus range from approximately ₹10.96 Lakhs to ₹12.16 Lakhs depending on specialization."
+  },
+
+  "mba": {
+    "guntur": "MBA fees at Guntur campus range from ₹4.5 Lakhs (Standard MBA) to ₹10 Lakhs (Global Management program) annually."
+  },
+
+  "ug_programs": "Other undergraduate program fees range from approximately ₹6.46 Lakhs to ₹12.16 Lakhs.",
+
+  "pg_programs": "Postgraduate program fees are approximately ₹9.15 Lakhs depending on the course.",
+
+  "hostel": {
+    "guntur": "Hostel fees at Guntur campus range from ₹80,000 to ₹1.8 Lakhs per year depending on room type and AC/Non-AC facilities."
+  }
+},
+
+
+  "portals": {
+  "official_website": "https://www.kluniversity.in\n",
+  "erp": "https://erp.kluniversity.in\n",
+  "lms": "https://lms.kluniversity.in\n",
+  "academics": "https://academics.kluniversity.in\n",
+  "admissions": "https://admissions.kluniversity.in"
+},
+
+
+  "images": {
+    "campus": "assets/campus_view.jpg",
+    "map": "assets/campus_map.png",
+    "logo": "assets/klu_logo.jpg",
+    "route": "assets/campus_route.png"
+  },
+  "hostel_rules": {
+  "summary": "KL University hostel rules emphasize discipline, safety, punctuality, and responsible behavior among residents.",
+
+  "timings_attendance": {
+    "first_year": "First-year students must be inside the hostel by 3:00 PM.",
+    "seniors": "Senior students must return to the hostel by 6:00 PM.",
+    "study_hours": "Mandatory study hours are from 7:30 PM to 10:30 PM, during which students must remain in their rooms."
+  },
+
+  "visitors": "Visitors are allowed only in the visitors' hall with prior warden permission and only until 7:30 PM. Visitors are not permitted inside hostel rooms.",
+
+  "prohibited_items": "Electrical appliances such as stoves, heaters, and irons are strictly banned. Alcohol, drugs, cigarettes, and gutka are strictly prohibited.",
+
+  "property_safety": "Students must lock their rooms and deposit keys with security when leaving. Any damage to hostel property will attract a fine double the cost of the damage.",
+
+  "conduct": "Ragging is strictly prohibited and may result in expulsion. Noise-free, approved in-room celebrations are allowed, but partying is not permitted.",
+
+  "meals": "Food must be consumed only in the dining hall. Taking food to rooms is not permitted.",
+
+  "loss_liability": "The management is not responsible for the loss of personal belongings such as cash or laptops.",
+
+  "administrative": {
+    "fee_payment": "Hostel fees must be paid on or before the 5th of every month.",
+    "room_allotment": "Rooms are allotted on a first-come, first-served basis.",
+    "vacating": "Mid-year or premature vacating of hostel rooms does not entitle students to any refund."
+  }
+}
+
+}
