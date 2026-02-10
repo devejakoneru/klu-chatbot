@@ -1,10 +1,27 @@
 import json
+from gan_model.gan import GANResponseEngine   # ✅ GAN import
 
 DATA_FILE = "knowledge_base/klu_data.json"
+
+# Initialize GAN engine once
+gan_engine = GANResponseEngine()
+
 
 def load_data():
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+def enhance_with_gan(text: str) -> str:
+    """
+    Safely enhance response using GAN generator.
+    If anything fails, return original text.
+    """
+    try:
+        return gan_engine.generate_response(text)
+    except Exception:
+        return text
+
 
 def handle_user_query(query):
     data = load_data()
@@ -30,7 +47,7 @@ def handle_user_query(query):
             f"- Room Allotment: {h['administrative']['room_allotment']}\n"
             f"- Vacating Policy: {h['administrative']['vacating']}"
         )
-        return "text", response
+        return "text", enhance_with_gan(response)
 
     # ---- RULES ----
     if q.strip() == "rules" or "college rules" in q:
@@ -43,7 +60,7 @@ def handle_user_query(query):
             f"**Dress Code:** {r['code_of_conduct']['dress_code']}\n"
             f"**Prohibited Activities:** {r['code_of_conduct']['prohibited']}"
         )
-        return "text", response
+        return "text", enhance_with_gan(response)
 
     # ---- FEES ----
     if "fee" in q or "fees" in q or "fee structure" in q:
@@ -57,16 +74,15 @@ def handle_user_query(query):
             "🏠 **Hostel Fees (Guntur Campus):**\n"
             f"{f['hostel']['guntur']}"
         )
-        return "text", response
+        return "text", enhance_with_gan(response)
 
-    # ---- LIBRARY ----
-    # ---- LIBRARY ----
     # ---- LIBRARY ----
     if "library" in q or "book" in q:
         lib = data.get("library", {})
-        timings = lib.get("timings", "Library timing information not available.")
-        books = lib.get("books", "Book borrowing information not available.")
-        return "text", f"{timings} {books}"
+        timings = lib.get("timings", "📚 Central Library Timings: 8:00 AM to 10:00 PM.")
+        books = lib.get("books", "Students are allowed to borrow up to 4 books at a time.")
+        response = f"{timings}\n{books}"
+        return "text", enhance_with_gan(response)
 
     # ---- OFFICIAL LINKS / PORTALS ----
     if (
@@ -87,7 +103,7 @@ def handle_user_query(query):
             f"**Academics Portal:** {p['academics']}\n"
             f"**Admissions Portal:** {p['admissions']}"
         )
-        return "text", response
+        return "text", enhance_with_gan(response)
 
     # ---- IMAGES ----
     if "logo" in q:
@@ -103,4 +119,5 @@ def handle_user_query(query):
         return "image", data["images"]["route"]
 
     # ---- FALLBACK (MUST BE LAST) ----
-    return "text", "You can ask about rules, fees, hostel rules, library, portals, campus images, logo, or route map."
+    fallback = "You can ask about rules, fees, hostel rules, library, portals, campus images, logo, or route map."
+    return "text", enhance_with_gan(fallback)
