@@ -1,6 +1,6 @@
 import streamlit as st
 from chatbot_control.controller import handle_user_query
-from gan_model.gan import enhance_response
+
 
 def start_ui():
     st.set_page_config(page_title="KLU Chatbot", layout="centered")
