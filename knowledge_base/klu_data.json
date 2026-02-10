@@ -57,6 +57,10 @@
   "admissions": "https://admissions.kluniversity.in"
 },
 
+  "library": {
+  "timings": "📚 Central Library Timings: 8:00 AM to 10:00 PM.",
+  "books": "Students are allowed to borrow up to 4 books at a time."
+},
 
   "images": {
     "campus": "assets/campus_view.jpg",
