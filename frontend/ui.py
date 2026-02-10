@@ -46,13 +46,12 @@ def start_ui():
         user_input, send = "campus map", True
 
     # PROCESS INPUT
+
     if send and user_input.strip():
         st.session_state.chat.append(("user", "text", user_input))
 
         msg_type, response = handle_user_query(user_input)
-        if msg_type == "text":
-            response = enhance_response(response)
 
         st.session_state.chat.append(("bot", msg_type, response))
-
         st.rerun()
+
