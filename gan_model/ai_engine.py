@@ -10,9 +10,9 @@ def generate_academic_response(prompt: str) -> str:
 
         client = genai.Client(api_key=api_key)
 
-        response = client.generate_content(
+        response = client.models.generate_content(
             model="gemini-1.5-flash",
-            contents=prompt,
+            contents=prompt
         )
 
         return response.text
