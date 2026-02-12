@@ -72,7 +72,10 @@ def handle_user_query(query):
 
     # ================= HOSTEL =================
     if "hostel" in q:
-        return "text", "Hostel facilities are available with discipline and safety regulations."
+        return "text", (
+            "Hostel facilities include secure accommodation, study hours, "
+            "discipline policies, and mess facilities."
+        )
 
     # ================= PLACEMENTS =================
     if "placement" in q or "job" in q or "recruitment" in q:
@@ -96,8 +99,11 @@ def handle_user_query(query):
     if "vice chancellor" in q:
         return "text", f"Vice Chancellor: {data['administration']['vice_chancellor']}"
 
-    if "chancellor" in q:
-        return "text", f"Chancellor: {data['administration']['chancellor_president']}"
+    if "chancellor" in q or "president" in q:
+        return "text", f"Chancellor / President: {data['administration']['chancellor_president']}"
+
+    if "vice president" in q:
+        return "text", "Vice Presidents: " + ", ".join(data["administration"]["vice_presidents"])
 
     if "dean" in q:
         deans = data["administration"]["deans"]
@@ -122,6 +128,32 @@ def handle_user_query(query):
             f"Admissions: {p['admissions']}"
         )
 
+    # ================= LMS DETAILS =================
+    if "lms" in q:
+        lms = data["digital_portals"]["lms"]
+        response = (
+            f"LMS Portal:\n"
+            f"Link: {lms['link']}\n\n"
+            f"{lms['description']}\n\n"
+            "Upload Rules:\n"
+        )
+        for rule in lms["upload_rules"]:
+            response += f"- {rule}\n"
+        return "text", response
+
+    # ================= ACADEMIC PORTAL DETAILS =================
+    if "academic portal" in q or "academics portal" in q:
+        ap = data["digital_portals"]["academic_portal"]
+        response = (
+            f"Academic Portal:\n"
+            f"Link: {ap['link']}\n\n"
+            f"{ap['description']}\n\n"
+            "Upload Rules:\n"
+        )
+        for rule in ap["upload_rules"]:
+            response += f"- {rule}\n"
+        return "text", response
+
     # ================= IMAGES =================
     if "logo" in q:
         return "image", data["images"]["logo"]
@@ -135,4 +167,8 @@ def handle_user_query(query):
     if "route" in q:
         return "image", data["images"]["route"]
 
-    return "text", "I can help with admissions, fees, scholarships, exams, hostel, placements, leadership, library, portals, and campus information."
+    # ================= FALLBACK =================
+    return "text", (
+        "I can help with admissions, fees, scholarships, exams, hostel, "
+        "placements, leadership, library, portals, LMS, academic portal, and campus information."
+    )

@@ -1,47 +1,39 @@
 {
   "rules": {
     "summary": "KL University has strict academic, conduct, hostel, and institutional rules that students must follow.",
-
     "academic_conduct": {
       "attendance": "A minimum of 85% attendance is mandatory for all courses to be eligible for semester-end examinations.",
-      "evaluation": "In-semester evaluations contribute a maximum of 50% to the total marks. Answer scripts are shown to students for verification.",
+      "evaluation": "In-semester evaluations contribute a maximum of 50% to the total marks.",
       "integrity": "Students must maintain academic integrity and avoid malpractice in examinations."
     },
-
     "code_of_conduct": {
-      "discipline": "Strict silence and discipline must be maintained in classrooms, laboratories, and academic areas.",
-      "prohibited": "Ragging, smoking, alcohol consumption, and any form of indiscipline are strictly prohibited on campus.",
-      "dress_code": "Students are required to wear the prescribed uniform and follow the official dress code."
+      "discipline": "Strict silence and discipline must be maintained in classrooms and laboratories.",
+      "prohibited": "Ragging, smoking, alcohol consumption, and indiscipline are strictly prohibited.",
+      "dress_code": "Students must follow the prescribed uniform and official dress code."
     }
   },
 
   "fees": {
-    "summary": "KL Deemed to be University fee structure varies based on program, campus, and facilities.",
-
-    "btech": "B.Tech (4 years) fees at Hyderabad campus range from approximately ₹10.96 Lakhs to ₹12.16 Lakhs depending on specialization.",
-
-    "mba": "MBA fees at Guntur campus range from ₹4.5 Lakhs (Standard MBA) to ₹10 Lakhs (Global Management program) annually.",
-
-    "other_ug": "Other undergraduate program fees range from approximately ₹6.46 Lakhs to ₹12.16 Lakhs.",
-
-    "pg_programs": "Postgraduate program fees are approximately ₹9.15 Lakhs depending on the course.",
-
-    "hostel_fees": "Hostel fees range from ₹80,000 to ₹1.8 Lakhs per year depending on room type and AC/Non-AC facilities.",
-
+    "summary": "KL University fee structure varies based on program and campus.",
+    "btech": "B.Tech (4 years) fees range from ₹10.96 Lakhs to ₹12.16 Lakhs depending on specialization.",
+    "mba": "MBA fees range from ₹4.5 Lakhs to ₹10 Lakhs depending on specialization.",
+    "other_ug": "Other undergraduate programs range from ₹6.46 Lakhs to ₹12.16 Lakhs.",
+    "pg_programs": "Postgraduate programs are approximately ₹9.15 Lakhs.",
+    "hostel_fees": "Hostel fees range from ₹80,000 to ₹1.8 Lakhs annually.",
     "payment_procedure": [
       "Login to ERP portal using student credentials.",
       "Navigate to Fee Payment section.",
-      "Select semester and verify amount.",
+      "Select semester and verify the payable amount.",
       "Choose payment method (Net Banking / UPI / Card).",
-      "Download receipt after successful payment."
+      "Download and save payment receipt."
     ]
   },
 
   "scholarships": {
-    "merit_based": "Scholarships are provided based on academic merit and performance in qualifying examinations.",
+    "merit_based": "Scholarships are provided based on academic performance.",
     "marks_based": "Students with Intermediate marks >= 90% are eligible for fee reduction.",
-    "sports": "Sports quota scholarships are available for state and national level achievers.",
-    "need_based": "Financial assistance may be provided to economically weaker students."
+    "sports": "Sports scholarships are available for state and national level achievers.",
+    "need_based": "Financial assistance is available for economically weaker students."
   },
 
   "examinations": {
@@ -51,8 +43,8 @@
 
   "admissions": {
     "process": [
-      "Apply online through the official admissions portal.",
-      "Appear for KLCET or other accepted entrance exams.",
+      "Apply online through official admissions portal.",
+      "Appear for KLCET or accepted entrance exam.",
       "Attend counseling session.",
       "Document verification.",
       "Fee payment and enrollment confirmation."
@@ -89,19 +81,19 @@
       "Resume building workshops.",
       "Aptitude and technical training.",
       "Campus recruitment drives.",
-      "Interview rounds with companies."
+      "Technical and HR interviews."
     ]
   },
 
   "campus_safety": {
     "security": "24/7 campus security with trained personnel.",
     "cctv": "CCTV surveillance across academic and hostel areas.",
-    "anti_ragging": "Strict anti-ragging policy with disciplinary action for violations."
+    "anti_ragging": "Strict anti-ragging policy with disciplinary action."
   },
 
   "library": {
-    "timings": "📚 Central Library Timings: 8:00 AM to 10:00 PM.",
-    "books": "Students are allowed to borrow up to 4 books at a time."
+    "timings": "Central Library Timings: 8:00 AM to 10:00 PM.",
+    "books": "Students can borrow up to 4 books at a time."
   },
 
   "portals": {
@@ -110,6 +102,30 @@
     "lms": "https://lms.kluniversity.in",
     "academics": "https://academics.kluniversity.in",
     "admissions": "https://admissions.kluniversity.in"
+  },
+
+  "digital_portals": {
+    "lms": {
+      "link": "https://lms.kluniversity.in",
+      "description": "Learning Management System used for course materials, assignments, quizzes, and internal assessments.",
+      "upload_rules": [
+        "Faculty must upload lecture notes before scheduled class.",
+        "Assignments must be uploaded in PDF format.",
+        "File size should not exceed 20 MB.",
+        "Students must submit assignments before deadline.",
+        "Late submissions may attract penalties."
+      ]
+    },
+    "academic_portal": {
+      "link": "https://academics.kluniversity.in",
+      "description": "Academic portal used for attendance, marks entry, course registration, and results.",
+      "upload_rules": [
+        "Internal marks must be uploaded before exam deadline.",
+        "Attendance percentage must be updated regularly.",
+        "Marks once submitted require administrative approval for modification.",
+        "All entries must be verified before final submission."
+      ]
+    }
   },
 
   "images": {
