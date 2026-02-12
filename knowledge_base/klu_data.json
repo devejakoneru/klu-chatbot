@@ -28,6 +28,13 @@
       "Download and save payment receipt."
     ]
   },
+   "exams": "Examination Pattern: Internal marks 60% and External marks 40%. Students must maintain minimum attendance eligibility to write semester-end exams.",
+
+   "admissions": "Admissions are conducted through KLEEE / KCET and other national entrance exams. Students must apply online through the admissions portal and complete document verification.",
+
+   "attendance_info": "Minimum 85% attendance is mandatory for all courses to be eligible for semester-end examinations.",
+
+   "administration": "Administrative office handles admissions, certificates, fee records, hostel allotment, and academic documentation. Students can contact administration through official portal.",
 
   "scholarships": {
     "merit_based": "Scholarships are provided based on academic performance.",

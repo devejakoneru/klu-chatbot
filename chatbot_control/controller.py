@@ -146,6 +146,17 @@ def handle_user_query(query):
 
     if "logo" in q:
         return "image", data["images"]["logo"]
+    # ATTENDANCE DIRECT
+    if "attendance" in q:
+        return "text", data["attendance_info"]
+
+    # ADMISSIONS
+    if "admission" in q:
+        return "text", data["admissions"]
+
+    # ADMINISTRATION
+    if "administration" in q:
+        return "text", data["administration"]
 
     # ======================================
     # FALLBACK
