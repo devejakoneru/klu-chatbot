@@ -1,37 +1,21 @@
 import os
-import google.generativeai as genai
+from google import genai
 
-# Get API key from environment variable
-API_KEY = os.getenv("GEMINI_API_KEY")
-
-genai.configure(api_key=API_KEY)
-
-model = genai.GenerativeModel("gemini-pro")
-
-
-def generate_academic_response(user_query: str) -> str:
-    """
-    Generates response only for university / academic related queries.
-    """
-
-    system_prompt = """
-    You are KLU Campus Assistant.
-    Only answer questions related to:
-    - KL University
-    - Academics
-    - ERP
-    - Exams
-    - Placements
-    - Study advice
-    - CGPA improvement
-    - Courses and syllabus
-
-    If the question is unrelated, respond strictly:
-    "I can only assist with KLU and study-related queries."
-    """
-
+def generate_academic_response(prompt: str) -> str:
     try:
-        response = model.generate_content(system_prompt + "\nUser: " + user_query)
+        api_key = os.getenv("GEMINI_API_KEY")
+
+        if not api_key:
+            return "API key not configured."
+
+        client = genai.Client(api_key=api_key)
+
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=prompt,
+        )
+
         return response.text
-    except Exception:
-        return "AI service is currently unavailable. Please try again later."
+
+    except Exception as e:
+        return f"AI ERROR: {str(e)}"
