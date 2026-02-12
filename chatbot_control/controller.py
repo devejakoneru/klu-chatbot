@@ -1,9 +1,9 @@
 import json
-from gan_model.gan import GANResponseEngine   # ✅ GAN import
+from gan_model.gan import GANResponseEngine
+from gan_model.ai_engine import generate_academic_response
 
 DATA_FILE = "knowledge_base/klu_data.json"
 
-# Initialize GAN engine once
 gan_engine = GANResponseEngine()
 
 
@@ -13,99 +13,75 @@ def load_data():
 
 
 def enhance_with_gan(text: str) -> str:
-    """
-    Safely enhance response using GAN generator.
-    If anything fails, return original text.
-    """
     try:
         return gan_engine.generate_response(text)
     except Exception:
         return text
 
 
+def is_academic_query(query: str) -> bool:
+    allowed_keywords = [
+        "klu", "university", "fee", "attendance",
+        "exam", "hostel", "erp", "placement",
+        "cgpa", "study", "subject", "course",
+        "syllabus", "academics", "admission",
+        "how", "who", "what", "explain"
+    ]
+    return any(word in query.lower() for word in allowed_keywords)
+
+
 def handle_user_query(query):
     data = load_data()
-    q = query.lower()
+    q = query.lower().strip()
 
-    # ---- HOSTEL RULES (MUST BE EARLY) ----
-    if "hostel" in q:
-        h = data["hostel_rules"]
-        response = (
-            "🏠 **KL University Hostel Rules & Regulations**\n\n"
-            f"**Timings:**\n"
-            f"- First Years: {h['timings_attendance']['first_year']}\n"
-            f"- Seniors: {h['timings_attendance']['seniors']}\n"
-            f"- Study Hours: {h['timings_attendance']['study_hours']}\n\n"
-            f"**Visitors:** {h['visitors']}\n\n"
-            f"**Prohibited Items:** {h['prohibited_items']}\n\n"
-            f"**Property & Safety:** {h['property_safety']}\n\n"
-            f"**Conduct:** {h['conduct']}\n\n"
-            f"**Meals:** {h['meals']}\n\n"
-            f"**Loss / Liability:** {h['loss_liability']}\n\n"
-            "📌 **Administrative Rules**\n"
-            f"- Fee Payment: {h['administrative']['fee_payment']}\n"
-            f"- Room Allotment: {h['administrative']['room_allotment']}\n"
-            f"- Vacating Policy: {h['administrative']['vacating']}"
-        )
-        return "text", enhance_with_gan(response)
+    # ==================================================
+    # 1️⃣ EXACT MATCH SECTION (Priority JSON)
+    # ==================================================
 
-    # ---- RULES ----
-    if q.strip() == "rules" or "college rules" in q:
+    if q == "rules":
         r = data["rules"]
         response = (
             "📘 **KL University Rules Overview**\n\n"
-            f"**Attendance:** {r['academic_conduct']['attendance']}\n"
-            f"**Evaluation:** {r['academic_conduct']['evaluation']}\n"
-            f"**Discipline:** {r['code_of_conduct']['discipline']}\n"
-            f"**Dress Code:** {r['code_of_conduct']['dress_code']}\n"
-            f"**Prohibited Activities:** {r['code_of_conduct']['prohibited']}"
+            f"Attendance: {r['academic_conduct']['attendance']}\n"
+            f"Evaluation: {r['academic_conduct']['evaluation']}\n"
+            f"Discipline: {r['code_of_conduct']['discipline']}\n"
+            f"Dress Code: {r['code_of_conduct']['dress_code']}\n"
+            f"Prohibited: {r['code_of_conduct']['prohibited']}"
         )
         return "text", enhance_with_gan(response)
 
-    # ---- FEES ----
-    if "fee" in q or "fees" in q or "fee structure" in q:
+    if q == "fees":
         f = data["fees"]
         response = (
             "💰 **KL University Fee Structure (Approximate)**\n\n"
-            f"**B.Tech (Hyderabad Campus):** {f['btech']['hyderabad']}\n\n"
-            f"**MBA (Guntur Campus):** {f['mba']['guntur']}\n\n"
-            f"**Other UG Programs:** {f['ug_programs']}\n"
-            f"**PG Programs:** {f['pg_programs']}\n\n"
-            "🏠 **Hostel Fees (Guntur Campus):**\n"
-            f"{f['hostel']['guntur']}"
+            f"B.Tech: {f['btech']['hyderabad']}\n"
+            f"MBA: {f['mba']['guntur']}\n"
+            f"UG Programs: {f['ug_programs']}\n"
+            f"PG Programs: {f['pg_programs']}\n"
+            f"Hostel Fees: {f['hostel']['guntur']}"
         )
         return "text", enhance_with_gan(response)
 
-    # ---- LIBRARY ----
-    if "library" in q or "book" in q:
+    if q == "library":
         lib = data.get("library", {})
-        timings = lib.get("timings", "📚 Central Library Timings: 8:00 AM to 10:00 PM.")
-        books = lib.get("books", "Students are allowed to borrow up to 4 books at a time.")
-        response = f"{timings}\n{books}"
-        return "text", enhance_with_gan(response)
+        timings = lib.get("timings", "Library timing not available.")
+        books = lib.get("books", "Borrowing information not available.")
+        return "text", enhance_with_gan(f"{timings}\n{books}")
 
-    # ---- OFFICIAL LINKS / PORTALS ----
-    if (
-        "official" in q or
-        "website" in q or
-        "link" in q or
-        "portal" in q or
-        "erp" in q or
-        "lms" in q or
-        "academics" in q
-    ):
-        p = data["portals"]
+    if q == "hostel rules":
+        h = data["hostel_rules"]
         response = (
-            "🌐 **KL University Official Links**\n\n"
-            f"**Official Website:** {p['official_website']}\n"
-            f"**ERP Portal:** {p['erp']}\n"
-            f"**LMS Portal:** {p['lms']}\n"
-            f"**Academics Portal:** {p['academics']}\n"
-            f"**Admissions Portal:** {p['admissions']}"
+            f"Timings:\n"
+            f"- First Years: {h['timings_attendance']['first_year']}\n"
+            f"- Seniors: {h['timings_attendance']['seniors']}\n"
+            f"- Study Hours: {h['timings_attendance']['study_hours']}"
         )
         return "text", enhance_with_gan(response)
 
-    # ---- IMAGES ----
+    # ==================================================
+    # 2️⃣ IMAGE SECTION
+    # ==================================================
+
     if "logo" in q:
         return "image", data["images"]["logo"]
 
@@ -118,6 +94,18 @@ def handle_user_query(query):
     if "route" in q:
         return "image", data["images"]["route"]
 
-    # ---- FALLBACK (MUST BE LAST) ----
+    # ==================================================
+    # 3️⃣ AI SECTION (Complex Queries Only)
+    # ==================================================
+
+    # If query has more than 3 words → treat as detailed question
+    if len(q.split()) > 3 and is_academic_query(query):
+        ai_response = generate_academic_response(query)
+        return "text", ai_response
+
+    # ==================================================
+    # 4️⃣ FALLBACK
+    # ==================================================
+
     fallback = "You can ask about rules, fees, hostel rules, library, portals, campus images, logo, or route map."
     return "text", enhance_with_gan(fallback)
