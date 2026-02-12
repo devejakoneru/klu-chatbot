@@ -155,10 +155,8 @@ def handle_user_query(query):
         return "text", response
 
     # ================= IMAGES =================
-    if "logo" in q:
-        return "image", data["images"]["logo"]
-
-    if "campus image" in q:
+    # ================= IMAGES =================
+    if "campus" in q and ("view" in q or "image" in q):
         return "image", data["images"]["campus"]
 
     if "map" in q:
@@ -167,6 +165,8 @@ def handle_user_query(query):
     if "route" in q:
         return "image", data["images"]["route"]
 
+    if "logo" in q:
+        return "image", data["images"]["logo"]
     # ================= FALLBACK =================
     return "text", (
         "I can help with admissions, fees, scholarships, exams, hostel, "
