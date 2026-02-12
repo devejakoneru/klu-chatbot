@@ -1,3 +1,13 @@
+import json
+
+DATA_FILE = "knowledge_base/klu_data.json"
+
+
+def load_data():
+    with open(DATA_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
 def handle_user_query(query):
     data = load_data()
     q = query.lower()
@@ -105,10 +115,11 @@ def handle_user_query(query):
     if "erp" in q or "portal" in q:
         p = data["portals"]
         return "text", (
+            f"Official Website: {p['official_website']}\n"
             f"ERP: {p['erp']}\n"
             f"LMS: {p['lms']}\n"
             f"Academics: {p['academics']}\n"
-            f"Official Website: {p['official_website']}"
+            f"Admissions: {p['admissions']}"
         )
 
     # ================= IMAGES =================
