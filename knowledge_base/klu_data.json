@@ -47,13 +47,29 @@
 
   "meals": "Food must be consumed only in the dining hall. No food is allowed inside hostel rooms.",
 
+  "mess": {
+    "breakfast": "South Indian and North Indian food is served.",
+    "lunch": "Rice, dal, vegetables, chapati, and curd.",
+    "dinner": "Rice, curry, chapati, and dessert."
+  },
+
+  "loss_liability": "The management is not responsible for the loss of personal belongings such as cash, mobiles, or laptops.",
+
+  "administrative_rules": {
+    "fee_payment": "Hostel fees must be paid on or before the 5th of every month.",
+    "room_allotment": "Rooms are allotted on a first-come, first-served basis.",
+    "vacating": "Mid-year or premature vacating of hostel does not entitle students to a refund."
+  }
+},
+
+
   "loss_liability": "The management is not responsible for the loss of personal belongings such as cash, laptops, or mobiles.",
 
   "administrative_rules": {
     "fee_payment": "Hostel fees must be paid on or before the 5th of every month.",
     "room_allotment": "Rooms are allotted on a first-come, first-served basis.",
     "vacating": "Mid-year or premature vacating does not entitle the student to any refund."
-  }
+
 },
 
    "exams": "Examination Pattern: Internal marks 60% and External marks 40%. Students must maintain minimum attendance eligibility to write semester-end exams.",
@@ -83,7 +99,9 @@
       "Attend counseling session.",
       "Document verification.",
       "Fee payment and enrollment confirmation."
-    ]
+    ],
+    "entrance_exams": "Admissions are through KLEEE (KLU Engineering Entrance Exam), KCET, and other national-level exams."
+
   },
 
   "administration": {
