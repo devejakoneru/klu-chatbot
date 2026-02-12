@@ -13,7 +13,7 @@ def handle_user_query(query):
     q = query.lower()
 
     # ================= RULES =================
-    if "rule" in q or "academic conduct" in q or "code of conduct" in q:
+    if "rule" in q or "academic conduct" in q or "conduct" in q:
         r = data["rules"]
         response = (
             f"{r['summary']}\n\n"
@@ -26,7 +26,7 @@ def handle_user_query(query):
         )
         return "text", response
 
-    # ================= FEES =================
+    # ================= FEES & PAYMENT =================
     if "fee" in q or "payment" in q:
         f = data["fees"]
         response = (
@@ -52,7 +52,7 @@ def handle_user_query(query):
         )
 
     # ================= SCHOLARSHIPS =================
-    if "scholarship" in q:
+    if "scholarship" in q or "90%" in q:
         s = data["scholarships"]
         return "text", (
             f"Scholarships:\n\n"
@@ -70,32 +70,7 @@ def handle_user_query(query):
             response += f"- {step}\n"
         return "text", response
 
-    # ================= HOSTEL =================
-    if "hostel" in q:
-        return "text", (
-            "Hostel facilities include secure accommodation, study hours, "
-            "discipline policies, and mess facilities."
-        )
-
-    # ================= PLACEMENTS =================
-    if "placement" in q or "job" in q or "recruitment" in q:
-        p = data["placements"]
-        response = "Placement Process:\n\n"
-        for step in p["placement_process"]:
-            response += f"- {step}\n"
-        return "text", response
-
-    # ================= SAFETY =================
-    if "safety" in q or "security" in q:
-        s = data["campus_safety"]
-        return "text", (
-            f"Campus Safety:\n"
-            f"{s['security']}\n"
-            f"{s['cctv']}\n"
-            f"{s['anti_ragging']}"
-        )
-
-    # ================= LEADERSHIP =================
+    # ================= ADMINISTRATION =================
     if "vice chancellor" in q:
         return "text", f"Vice Chancellor: {data['administration']['vice_chancellor']}"
 
@@ -112,13 +87,52 @@ def handle_user_query(query):
             response += f"{role}: {name}\n"
         return "text", response
 
+    # ================= PLACEMENTS =================
+    if "placement" in q or "job" in q or "recruitment" in q:
+        p = data["placements"]
+        response = "Placement Process:\n\n"
+        for step in p["placement_process"]:
+            response += f"- {step}\n"
+        return "text", response
+
+    # ================= SAFETY =================
+    if "safety" in q or "security" in q:
+        s = data["campus_safety"]
+        return "text", (
+            f"{s['security']}\n"
+            f"{s['cctv']}\n"
+            f"{s['anti_ragging']}"
+        )
+
     # ================= LIBRARY =================
     if "library" in q or "book" in q:
         l = data["library"]
         return "text", f"{l['timings']}\n{l['books']}"
 
+    # ================= LMS =================
+    if "lms" in q:
+        lms = data["digital_portals"]["lms"]
+        response = (
+            f"LMS Portal:\nLink: {lms['link']}\n\n"
+            f"{lms['description']}\n\nUpload Rules:\n"
+        )
+        for rule in lms["upload_rules"]:
+            response += f"- {rule}\n"
+        return "text", response
+
+    # ================= ACADEMIC PORTAL =================
+    if "academic portal" in q or "academics portal" in q:
+        ap = data["digital_portals"]["academic_portal"]
+        response = (
+            f"Academic Portal:\nLink: {ap['link']}\n\n"
+            f"{ap['description']}\n\nUpload Rules:\n"
+        )
+        for rule in ap["upload_rules"]:
+            response += f"- {rule}\n"
+        return "text", response
+
     # ================= PORTALS =================
-    if "erp" in q or "portal" in q:
+    if "portal" in q or "erp" in q:
         p = data["portals"]
         return "text", (
             f"Official Website: {p['official_website']}\n"
@@ -128,33 +142,6 @@ def handle_user_query(query):
             f"Admissions: {p['admissions']}"
         )
 
-    # ================= LMS DETAILS =================
-    if "lms" in q:
-        lms = data["digital_portals"]["lms"]
-        response = (
-            f"LMS Portal:\n"
-            f"Link: {lms['link']}\n\n"
-            f"{lms['description']}\n\n"
-            "Upload Rules:\n"
-        )
-        for rule in lms["upload_rules"]:
-            response += f"- {rule}\n"
-        return "text", response
-
-    # ================= ACADEMIC PORTAL DETAILS =================
-    if "academic portal" in q or "academics portal" in q:
-        ap = data["digital_portals"]["academic_portal"]
-        response = (
-            f"Academic Portal:\n"
-            f"Link: {ap['link']}\n\n"
-            f"{ap['description']}\n\n"
-            "Upload Rules:\n"
-        )
-        for rule in ap["upload_rules"]:
-            response += f"- {rule}\n"
-        return "text", response
-
-    # ================= IMAGES =================
     # ================= IMAGES =================
     if "campus" in q and ("view" in q or "image" in q):
         return "image", data["images"]["campus"]
@@ -162,13 +149,11 @@ def handle_user_query(query):
     if "map" in q:
         return "image", data["images"]["map"]
 
-    if "route" in q:
-        return "image", data["images"]["route"]
-
     if "logo" in q:
         return "image", data["images"]["logo"]
+
     # ================= FALLBACK =================
     return "text", (
-        "I can help with admissions, fees, scholarships, exams, hostel, "
-        "placements, leadership, library, portals, LMS, academic portal, and campus information."
+        "I can help with rules, fees, scholarships, exams, admissions, "
+        "leadership, placements, library, LMS, portals, and campus information."
     )
