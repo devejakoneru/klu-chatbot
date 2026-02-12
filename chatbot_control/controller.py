@@ -12,9 +12,99 @@ def handle_user_query(query):
     data = load_data()
     q = query.lower()
 
-    # ================= RULES =================
-    if "rule" in q or "academic conduct" in q or "conduct" in q:
+    # ======================================
+    # LMS & ACADEMIC PORTAL (CHECK FIRST)
+    # ======================================
+
+    if "lms" in q and "upload" in q:
+        return "text", data["portals"]["lms_upload_rules"]
+
+    if "academic portal" in q and "upload" in q:
+        return "text", data["portals"]["academic_upload_rules"]
+
+    # ======================================
+    # ERP PAYMENT
+    # ======================================
+
+    if "erp" in q and ("pay" in q or "payment" in q or "fee" in q):
+        return "text", data["erp_payment_procedure"]
+
+    # ======================================
+    # HOSTEL RULES
+    # ======================================
+
+    if "hostel" in q:
+        h = data["hostel_rules"]
+
+        response = (
+            f"{h['summary']}\n\n"
+            f"First Year Timing: {h['timings_attendance']['first_year']}\n"
+            f"Seniors Timing: {h['timings_attendance']['seniors']}\n"
+            f"Study Hours: {h['timings_attendance']['study_hours']}\n\n"
+            f"Visitors: {h['visitors']}\n"
+            f"Prohibited Items: {h['prohibited_items']}\n"
+            f"Property & Safety: {h['property_safety']}\n"
+            f"Conduct: {h['conduct']}\n"
+            f"Meals: {h['meals']}\n"
+            f"Loss Liability: {h['loss_liability']}"
+        )
+
+        return "text", response
+
+    # ======================================
+    # EXAMS
+    # ======================================
+
+    if "exam" in q:
+        return "text", data["exams"]
+
+    # ======================================
+    # SCHOLARSHIPS
+    # ======================================
+
+    if "scholarship" in q:
+        return "text", data["scholarship"]
+
+    # ======================================
+    # LEADERSHIP / HIERARCHY
+    # ======================================
+
+    if any(word in q for word in ["chancellor", "chairman", "president", "vice chancellor", "dean"]):
+        return "text", data["leadership"]
+
+    # ======================================
+    # LIBRARY
+    # ======================================
+
+    if "library" in q or "book" in q:
+        lib = data["library"]
+        return "text", f"{lib['timings']}\n{lib['books']}"
+
+    # ======================================
+    # FEES
+    # ======================================
+
+    if "fee" in q:
+        f = data["fees"]
+
+        response = (
+            f"{f['summary']}\n\n"
+            f"B.Tech: {f['btech']['hyderabad']}\n\n"
+            f"MBA: {f['mba']['guntur']}\n\n"
+            f"Other UG: {f['ug_programs']}\n"
+            f"PG Programs: {f['pg_programs']}\n\n"
+            f"Hostel Fees: {f['hostel']['guntur']}"
+        )
+
+        return "text", response
+
+    # ======================================
+    # GENERAL RULES (AFTER SPECIFIC CHECKS)
+    # ======================================
+
+    if "rules" in q or "college rules" in q:
         r = data["rules"]
+
         response = (
             f"{r['summary']}\n\n"
             f"Attendance: {r['academic_conduct']['attendance']}\n"
@@ -24,136 +114,41 @@ def handle_user_query(query):
             f"Prohibited: {r['code_of_conduct']['prohibited']}\n"
             f"Dress Code: {r['code_of_conduct']['dress_code']}"
         )
+
         return "text", response
 
-    # ================= FEES & PAYMENT =================
-    if "fee" in q or "payment" in q:
-        f = data["fees"]
-        response = (
-            f"{f['summary']}\n\n"
-            f"B.Tech: {f['btech']}\n"
-            f"MBA: {f['mba']}\n"
-            f"Other UG: {f['other_ug']}\n"
-            f"PG Programs: {f['pg_programs']}\n"
-            f"Hostel Fees: {f['hostel_fees']}\n\n"
-            "Payment Procedure:\n"
-        )
-        for step in f["payment_procedure"]:
-            response += f"- {step}\n"
-        return "text", response
+    # ======================================
+    # PORTALS
+    # ======================================
 
-    # ================= EXAMS =================
-    if "exam" in q or "internal" in q or "external" in q:
-        e = data["examinations"]
-        return "text", (
-            f"Exam Pattern:\n\n"
-            f"{e['internal_weightage']}\n"
-            f"{e['external_weightage']}"
-        )
-
-    # ================= SCHOLARSHIPS =================
-    if "scholarship" in q or "90%" in q:
-        s = data["scholarships"]
-        return "text", (
-            f"Scholarships:\n\n"
-            f"Merit: {s['merit_based']}\n"
-            f"Marks Based: {s['marks_based']}\n"
-            f"Sports: {s['sports']}\n"
-            f"Need Based: {s['need_based']}"
-        )
-
-    # ================= ADMISSIONS =================
-    if "admission" in q or "klcet" in q:
-        a = data["admissions"]
-        response = "Admission Process:\n\n"
-        for step in a["process"]:
-            response += f"- {step}\n"
-        return "text", response
-
-    # ================= ADMINISTRATION =================
-    if "vice chancellor" in q:
-        return "text", f"Vice Chancellor: {data['administration']['vice_chancellor']}"
-
-    if "chancellor" in q or "president" in q:
-        return "text", f"Chancellor / President: {data['administration']['chancellor_president']}"
-
-    if "vice president" in q:
-        return "text", "Vice Presidents: " + ", ".join(data["administration"]["vice_presidents"])
-
-    if "dean" in q:
-        deans = data["administration"]["deans"]
-        response = "University Deans:\n\n"
-        for role, name in deans.items():
-            response += f"{role}: {name}\n"
-        return "text", response
-
-    # ================= PLACEMENTS =================
-    if "placement" in q or "job" in q or "recruitment" in q:
-        p = data["placements"]
-        response = "Placement Process:\n\n"
-        for step in p["placement_process"]:
-            response += f"- {step}\n"
-        return "text", response
-
-    # ================= SAFETY =================
-    if "safety" in q or "security" in q:
-        s = data["campus_safety"]
-        return "text", (
-            f"{s['security']}\n"
-            f"{s['cctv']}\n"
-            f"{s['anti_ragging']}"
-        )
-
-    # ================= LIBRARY =================
-    if "library" in q or "book" in q:
-        l = data["library"]
-        return "text", f"{l['timings']}\n{l['books']}"
-
-    # ================= LMS =================
-    if "lms" in q:
-        lms = data["digital_portals"]["lms"]
-        response = (
-            f"LMS Portal:\nLink: {lms['link']}\n\n"
-            f"{lms['description']}\n\nUpload Rules:\n"
-        )
-        for rule in lms["upload_rules"]:
-            response += f"- {rule}\n"
-        return "text", response
-
-    # ================= ACADEMIC PORTAL =================
-    if "academic portal" in q or "academics portal" in q:
-        ap = data["digital_portals"]["academic_portal"]
-        response = (
-            f"Academic Portal:\nLink: {ap['link']}\n\n"
-            f"{ap['description']}\n\nUpload Rules:\n"
-        )
-        for rule in ap["upload_rules"]:
-            response += f"- {rule}\n"
-        return "text", response
-
-    # ================= PORTALS =================
-    if "portal" in q or "erp" in q:
+    if "portal" in q or "website" in q or "link" in q:
         p = data["portals"]
-        return "text", (
+
+        response = (
             f"Official Website: {p['official_website']}\n"
-            f"ERP: {p['erp']}\n"
-            f"LMS: {p['lms']}\n"
-            f"Academics: {p['academics']}\n"
-            f"Admissions: {p['admissions']}"
+            f"ERP Portal: {p['erp']}\n"
+            f"LMS Portal: {p['lms']}\n"
+            f"Academic Portal: {p['academics']}\n"
+            f"Admissions Portal: {p['admissions']}"
         )
 
-    # ================= IMAGES =================
-    if "campus" in q and ("view" in q or "image" in q):
-        return "image", data["images"]["campus"]
+        return "text", response
 
-    if "map" in q:
+    # ======================================
+    # IMAGES
+    # ======================================
+
+    if "campus map" in q:
         return "image", data["images"]["map"]
+
+    if "campus view" in q or "campus image" in q:
+        return "image", data["images"]["campus"]
 
     if "logo" in q:
         return "image", data["images"]["logo"]
 
-    # ================= FALLBACK =================
-    return "text", (
-        "I can help with rules, fees, scholarships, exams, admissions, "
-        "leadership, placements, library, LMS, portals, and campus information."
-    )
+    # ======================================
+    # FALLBACK
+    # ======================================
+
+    return "text", "I can help with admissions, fees, scholarships, exams, hostel, placements, leadership, library, portals, LMS, academic portal, and campus information."
