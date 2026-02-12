@@ -26,8 +26,29 @@ def handle_user_query(query):
         return "text", "\n".join(data["fees"]["payment_procedure"])
 
     # ================= HOSTEL =================
+    # ======================================
+    # HOSTEL RULES
+    # ======================================
     if "hostel" in q:
-        return "text", data["fees"]["hostel_fees"]
+        h = data["hostel_rules"]
+
+        response = (
+            f"{h['summary']}\n\n"
+            f"First Year Timing: {h['timings_attendance']['first_year']}\n"
+            f"Seniors Timing: {h['timings_attendance']['seniors']}\n"
+            f"Study Hours: {h['timings_attendance']['study_hours']}\n\n"
+            f"Visitors: {h['visitors']}\n"
+            f"Prohibited Items: {h['prohibited_items']}\n"
+            f"Property & Safety: {h['property_safety']}\n"
+            f"Conduct: {h['conduct']}\n"
+            f"Meals: {h['meals']}\n"
+            f"Loss Liability: {h['loss_liability']}\n\n"
+            f"Hostel Fee Payment: {h['administrative_rules']['fee_payment']}\n"
+            f"Room Allotment: {h['administrative_rules']['room_allotment']}\n"
+            f"Vacating: {h['administrative_rules']['vacating']}"
+        )
+
+        return "text", response
 
     # ================= EXAMS =================
     if "exam" in q:

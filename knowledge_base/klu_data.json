@@ -28,6 +28,34 @@
       "Download and save payment receipt."
     ]
   },
+  "hostel_rules": {
+  "summary": "KLU hostel rules ensure discipline, safety, cleanliness, and student well-being inside the campus hostels.",
+
+  "timings_attendance": {
+    "first_year": "First-year students must be inside the hostel by 3:00 PM.",
+    "seniors": "Senior students must be inside the hostel by 6:00 PM.",
+    "study_hours": "All students must remain in their rooms during study hours from 7:30 PM to 10:30 PM."
+  },
+
+  "visitors": "Visitors are not allowed in rooms. They are restricted to the visitors’ hall with prior warden permission and only until 7:30 PM.",
+
+  "prohibited_items": "Electrical appliances such as heaters, stoves, and irons are strictly prohibited. Possession of alcohol, drugs, cigarettes, and gutka is not allowed.",
+
+  "property_safety": "Students must lock their rooms and deposit keys with security when leaving. Damage to hostel property will be fined double the cost of the damage.",
+
+  "conduct": "Ragging is strictly prohibited and may lead to expulsion. Noise-free and approved in-room celebrations are allowed, but partying is not permitted.",
+
+  "meals": "Food must be consumed only in the dining hall. No food is allowed inside hostel rooms.",
+
+  "loss_liability": "The management is not responsible for the loss of personal belongings such as cash, laptops, or mobiles.",
+
+  "administrative_rules": {
+    "fee_payment": "Hostel fees must be paid on or before the 5th of every month.",
+    "room_allotment": "Rooms are allotted on a first-come, first-served basis.",
+    "vacating": "Mid-year or premature vacating does not entitle the student to any refund."
+  }
+},
+
    "exams": "Examination Pattern: Internal marks 60% and External marks 40%. Students must maintain minimum attendance eligibility to write semester-end exams.",
 
    "admissions": "Admissions are conducted through KLEEE / KCET and other national entrance exams. Students must apply online through the admissions portal and complete document verification.",
