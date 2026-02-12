@@ -12,100 +12,63 @@ def handle_user_query(query):
     data = load_data()
     q = query.lower()
 
-    # ======================================
-    # LMS & ACADEMIC PORTAL (CHECK FIRST)
-    # ======================================
-
+    # ================= LMS & ACADEMIC PORTAL =================
     if "lms" in q and "upload" in q:
-        return "text", data["portals"]["lms_upload_rules"]
+        rules = data["digital_portals"]["lms"]["upload_rules"]
+        return "text", "\n".join(rules)
 
-    if "academic portal" in q and "upload" in q:
-        return "text", data["portals"]["academic_upload_rules"]
+    if ("academic portal" in q or "academics" in q) and "upload" in q:
+        rules = data["digital_portals"]["academic_portal"]["upload_rules"]
+        return "text", "\n".join(rules)
 
-    # ======================================
-    # ERP PAYMENT
-    # ======================================
-
+    # ================= ERP PAYMENT =================
     if "erp" in q and ("pay" in q or "payment" in q or "fee" in q):
-        return "text", data["erp_payment_procedure"]
+        return "text", "\n".join(data["fees"]["payment_procedure"])
 
-    # ======================================
-    # HOSTEL RULES
-    # ======================================
-
+    # ================= HOSTEL =================
     if "hostel" in q:
-        h = data["hostel_rules"]
+        return "text", data["fees"]["hostel_fees"]
 
-        response = (
-            f"{h['summary']}\n\n"
-            f"First Year Timing: {h['timings_attendance']['first_year']}\n"
-            f"Seniors Timing: {h['timings_attendance']['seniors']}\n"
-            f"Study Hours: {h['timings_attendance']['study_hours']}\n\n"
-            f"Visitors: {h['visitors']}\n"
-            f"Prohibited Items: {h['prohibited_items']}\n"
-            f"Property & Safety: {h['property_safety']}\n"
-            f"Conduct: {h['conduct']}\n"
-            f"Meals: {h['meals']}\n"
-            f"Loss Liability: {h['loss_liability']}"
-        )
-
-        return "text", response
-
-    # ======================================
-    # EXAMS
-    # ======================================
-
+    # ================= EXAMS =================
     if "exam" in q:
         return "text", data["exams"]
 
-    # ======================================
-    # SCHOLARSHIPS
-    # ======================================
-
+    # ================= SCHOLARSHIPS =================
     if "scholarship" in q:
-        return "text", data["scholarship"]
+        s = data["scholarships"]
+        return "text", "\n".join(s.values())
 
-    # ======================================
-    # LEADERSHIP / HIERARCHY
-    # ======================================
+    # ================= LEADERSHIP =================
+    if any(word in q for word in ["chancellor", "president", "vice chancellor", "dean"]):
+        a = data["administration"]
+        return "text", (
+            f"Chancellor: {a['chancellor_president']}\n"
+            f"Vice Presidents: {', '.join(a['vice_presidents'])}\n"
+            f"Vice Chancellor: {a['vice_chancellor']}\n"
+            f"Registrar: {a['registrar']}"
+        )
 
-    if any(word in q for word in ["chancellor", "chairman", "president", "vice chancellor", "dean"]):
-        return "text", data["leadership"]
-
-    # ======================================
-    # LIBRARY
-    # ======================================
-
+    # ================= LIBRARY =================
     if "library" in q or "book" in q:
         lib = data["library"]
         return "text", f"{lib['timings']}\n{lib['books']}"
 
-    # ======================================
-    # FEES
-    # ======================================
-
+    # ================= FEES =================
     if "fee" in q:
         f = data["fees"]
-
-        response = (
+        return "text", (
             f"{f['summary']}\n\n"
-            f"B.Tech: {f['btech']['hyderabad']}\n\n"
-            f"MBA: {f['mba']['guntur']}\n\n"
-            f"Other UG: {f['ug_programs']}\n"
+            f"B.Tech: {f['btech']}\n\n"
+            f"MBA: {f['mba']}\n\n"
+            f"Other UG: {f['other_ug']}\n"
             f"PG Programs: {f['pg_programs']}\n\n"
-            f"Hostel Fees: {f['hostel']['guntur']}"
+            f"Hostel Fees: {f['hostel_fees']}"
         )
 
-        return "text", response
-
-    # ======================================
-    # GENERAL RULES (AFTER SPECIFIC CHECKS)
-    # ======================================
-
-    if "rules" in q or "college rules" in q:
+    # ================= RULES =================
+    if "rules" in q:
         r = data["rules"]
-
-        response = (
+        return "text", (
             f"{r['summary']}\n\n"
             f"Attendance: {r['academic_conduct']['attendance']}\n"
             f"Evaluation: {r['academic_conduct']['evaluation']}\n"
@@ -115,51 +78,57 @@ def handle_user_query(query):
             f"Dress Code: {r['code_of_conduct']['dress_code']}"
         )
 
-        return "text", response
-
-    # ======================================
-    # PORTALS
-    # ======================================
-
+    # ================= PORTALS =================
     if "portal" in q or "website" in q or "link" in q:
         p = data["portals"]
-
-        response = (
+        return "text", (
             f"Official Website: {p['official_website']}\n"
-            f"ERP Portal: {p['erp']}\n"
-            f"LMS Portal: {p['lms']}\n"
+            f"ERP: {p['erp']}\n"
+            f"LMS: {p['lms']}\n"
             f"Academic Portal: {p['academics']}\n"
-            f"Admissions Portal: {p['admissions']}"
+            f"Admissions: {p['admissions']}"
         )
 
-        return "text", response
-
-    # ======================================
-    # IMAGES
-    # ======================================
-
+    # ================= IMAGES =================
     if "campus map" in q:
         return "image", data["images"]["map"]
 
-    if "campus view" in q or "campus image" in q:
+    if "campus" in q:
         return "image", data["images"]["campus"]
 
     if "logo" in q:
         return "image", data["images"]["logo"]
-    # ATTENDANCE DIRECT
+
+    # ================= ATTENDANCE =================
     if "attendance" in q:
         return "text", data["attendance_info"]
 
-    # ADMISSIONS
+    # ================= ADMISSIONS =================
     if "admission" in q:
-        return "text", data["admissions"]
+        return "text", "\n".join(data["admissions"]["process"])
 
-    # ADMINISTRATION
-    if "administration" in q:
-        return "text", data["administration"]
-
+    # ================= ADMIN =================
     # ======================================
-    # FALLBACK
+    # LEADERSHIP / ADMINISTRATION
     # ======================================
 
-    return "text", "I can help with admissions, fees, scholarships, exams, hostel, placements, leadership, library, portals, LMS, academic portal, and campus information."
+    if any(word in q for word in ["chancellor", "president", "vice chancellor", "dean", "registrar", "administration"]):
+        a = data["administration"]
+
+        response = (
+            f"Chancellor / President: {a['chancellor_president']}\n"
+            f"Vice-Presidents: {', '.join(a['vice_presidents'])}\n"
+            f"Pro-Chancellor: {a['pro_chancellor']}\n"
+            f"Vice-Chancellor: {a['vice_chancellor']}\n"
+            f"Pro Vice-Chancellors: {', '.join(a['pro_vice_chancellors'])}\n"
+            f"Registrar: {a['registrar']}\n\n"
+            "Key Deans:\n"
+        )
+
+        for role, name in a["deans"].items():
+            response += f"{role}: {name}\n"
+
+        return "text", response
+
+    # ================= FALLBACK =================
+    return "text", "I can help with admissions, fees, exams, scholarships, hostel, library, ERP, LMS, and campus info."

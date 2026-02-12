@@ -59,27 +59,28 @@
   },
 
   "administration": {
-    "chancellor_president": "Er. Koneru Satyanarayana",
-    "vice_presidents": [
-      "Er. Koneru Lakshman Havish",
-      "Er. Koneru Raja Hareen"
-    ],
-    "pro_chancellor": "Dr. K.S. Jagannatha Rao",
-    "vice_chancellor": "Dr. G. Pardha Saradhi Varma",
-    "pro_vice_chancellors": [
-      "Dr. A.V.S. Prasad",
-      "Dr. N. Venkatram",
-      "Dr. K. Rajasekhara Rao",
-      "Dr. K. Subbarao"
-    ],
-    "registrar": "Dr. K. Subbarao",
-    "deans": {
-      "Dean (Quality)": "Dr. K. Rama Krishna",
-      "Dean (R&D)": "Dr. B.T.P. Madhav",
-      "Dean (Student Affairs)": "Dr. KRS Prasad",
-      "Dean (Faculty & Staff Affairs)": "Dr. V. Srikanth",
-      "Dean (P&D)": "Dr. V. Rajesh"
-    }
+  "chancellor_president": "Er. Koneru Satyanarayana",
+  "vice_presidents": [
+    "Er. Koneru Lakshman Havish",
+    "Er. Koneru Raja Hareen"
+  ],
+  "pro_chancellor": "Dr. K.S. Jagannatha Rao",
+  "vice_chancellor": "Dr. G. Pardha Saradhi Varma",
+  "pro_vice_chancellors": [
+    "Dr. A.V.S. Prasad",
+    "Dr. N. Venkatram",
+    "Dr. K. Rajasekhara Rao",
+    "Dr. K. Subbarao"
+  ],
+  "registrar": "Dr. K. Subbarao",
+  "deans": {
+    "Dean (Quality)": "Dr. K. Rama Krishna",
+    "Dean (R&D)": "Dr. B.T.P. Madhav",
+    "Dean (Student Affairs)": "Dr. KRS Prasad",
+    "Dean (Faculty & Staff Affairs)": "Dr. V. Srikanth",
+    "Dean (P&D)": "Dr. V. Rajesh"
+  }
+
   },
 
   "placements": {
