@@ -1,5 +1,6 @@
 import os
-from google import genai
+import requests
+import json
 
 def generate_academic_response(prompt: str) -> str:
     try:
@@ -8,14 +9,27 @@ def generate_academic_response(prompt: str) -> str:
         if not api_key:
             return "API key not configured."
 
-        client = genai.Client(api_key=api_key)
+        url = f"https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key={api_key}"
 
-        response = client.models.generate_content(
-            model="gemini-1.5-flash",
-            contents=prompt
-        )
+        headers = {
+            "Content-Type": "application/json"
+        }
 
-        return response.text
+        data = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": prompt}
+                    ]
+                }
+            ]
+        }
+
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+
+        result = response.json()
+
+        return result["candidates"][0]["content"]["parts"][0]["text"]
 
     except Exception as e:
         return f"AI ERROR: {str(e)}"
