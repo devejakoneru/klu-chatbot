@@ -2,34 +2,30 @@ import streamlit as st
 from chatbot_control.controller import handle_user_query
 import os
 import time
-import speech_recognition as sr
-from gtts import gTTS
-import tempfile
 
-# text - speech
+
 def speak(text):
-    try:
-        tts = gTTS(text)
-        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
-        tts.save(temp_file.name)
-        st.audio(temp_file.name)
-    except:
-        pass
+    safe_text = text.replace('"', "'").replace("\n", " ")
+    st.markdown(f"""
+        <script>
+        var msg = new SpeechSynthesisUtterance("{safe_text}");
+        msg.rate = 1;
+        msg.pitch = 1;
+        msg.volume = 1;
+        window.speechSynthesis.speak(msg);
+        </script>
+    """, unsafe_allow_html=True)
 
-# Voice input
-def voice_input():
-    r = sr.Recognizer()
-    try:
-        with sr.Microphone() as source:
-            st.info("🎤 Listening... Speak now")
-            audio = r.listen(source, timeout=5)
-        return r.recognize_google(audio)
-    except:
-        return None
 
+# ------------------------------
+# 🚀 MAIN UI
+# ------------------------------
 def start_ui():
     st.set_page_config(page_title="KLU Smart Assistant", layout="centered")
 
+    # ------------------------------
+    # 🎨 PREMIUM CSS
+    # ------------------------------
     st.markdown("""
     <style>
 
@@ -38,7 +34,6 @@ def start_ui():
         color: white;
     }
 
-    /* Floating glow */
     @keyframes float {
       0% { transform: translateY(0px); }
       50% { transform: translateY(-20px); }
@@ -60,21 +55,11 @@ def start_ui():
     .f2 { top: 60%; right: 10%; animation-delay: 2s; }
     .f3 { bottom: 10%; left: 40%; animation-delay: 4s; }
 
-    /* Glass container */
-    .main-box {
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(20px);
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 0 40px rgba(59,130,246,0.3);
-    }
-
     .chat-user {
         background: linear-gradient(145deg, #1e40af, #2563eb);
         padding: 12px 18px;
         border-radius: 20px;
         margin-bottom: 8px;
-        color: white;
     }
 
     .chat-bot {
@@ -114,6 +99,9 @@ def start_ui():
     <div class="floating f3"></div>
     """, unsafe_allow_html=True)
 
+    # ------------------------------
+    # 📌 SIDEBAR
+    # ------------------------------
     with st.sidebar:
         st.title("KLU Smart Assistant 🤖")
         st.write("AI-based Academic Help System")
@@ -126,11 +114,11 @@ def start_ui():
         🔹 Library  
         🔹 Leadership  
         """)
-        st.divider()
         st.caption("Powered by Python & Streamlit")
 
-    st.markdown("<div class='main-box'>", unsafe_allow_html=True)
-
+    # ------------------------------
+    # HEADER
+    # ------------------------------
     col1, col2 = st.columns([1, 5])
 
     with col1:
@@ -143,33 +131,47 @@ def start_ui():
 
     st.divider()
 
+    # ------------------------------
+    # SESSION STATE
+    # ------------------------------
     if "chat" not in st.session_state:
         st.session_state.chat = []
 
-    for sender, content in st.session_state.chat:
+    # ------------------------------
+    # DISPLAY CHAT
+    # ------------------------------
+    for sender, msg_type, content in st.session_state.chat:
         if sender == "user":
             st.markdown(f"<div class='chat-user'><b>You:</b> {content}</div>", unsafe_allow_html=True)
         else:
-            st.markdown(f"<div class='chat-bot'><b>KLU AI:</b> {content}</div>", unsafe_allow_html=True)
+            if msg_type == "text":
+                st.markdown(f"<div class='chat-bot'><b>KLU AI:</b> {content}</div>", unsafe_allow_html=True)
+            elif msg_type == "image":
+                if os.path.exists(content):
+                    st.image(content, width="stretch")
 
+    # ------------------------------
+    # INPUT
+    # ------------------------------
     with st.form("chat_form", clear_on_submit=True):
         user_input = st.text_input("Ask something:")
-        col_send, col_voice = st.columns(2)
-        send = col_send.form_submit_button("Send")
-        voice_btn = col_voice.form_submit_button("🎤 Speak")
+        send = st.form_submit_button("Send")
 
-    if voice_btn:
-        spoken = voice_input()
-        if spoken:
-            user_input = spoken
-            st.session_state.chat.append(("user", user_input))
+    # ------------------------------
+    # PROCESS MESSAGE
+    # ------------------------------
+    if send and user_input.strip():
 
-            with st.spinner("🤖 Processing..."):
-                reply_type, reply = handle_user_query(user_input)
+        st.session_state.chat.append(("user", "text", user_input))
 
-            # Typing animation
+        with st.spinner("🤖 Processing..."):
+            msg_type, reply = handle_user_query(user_input)
+
+        # Typing animation for text
+        if msg_type == "text":
             placeholder = st.empty()
             typed = ""
+
             for char in reply:
                 typed += char
                 placeholder.markdown(
@@ -178,29 +180,10 @@ def start_ui():
                 )
                 time.sleep(0.01)
 
-            st.session_state.chat.append(("bot", reply))
+            st.session_state.chat.append(("bot", "text", reply))
             speak(reply)
-            st.rerun()
 
-    # Text send
-    if send and user_input.strip():
-        st.session_state.chat.append(("user", user_input))
+        elif msg_type == "image":
+            st.session_state.chat.append(("bot", "image", reply))
 
-        with st.spinner("🤖 Processing..."):
-            reply_type, reply = handle_user_query(user_input)
-
-        placeholder = st.empty()
-        typed = ""
-        for char in reply:
-            typed += char
-            placeholder.markdown(
-                f"<div class='chat-bot'><b>KLU AI:</b> {typed}</div>",
-                unsafe_allow_html=True
-            )
-            time.sleep(0.01)
-
-        st.session_state.chat.append(("bot", reply))
-        speak(reply)
         st.rerun()
-
-    st.markdown("</div>", unsafe_allow_html=True)
