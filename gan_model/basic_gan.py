@@ -2,10 +2,6 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-
-# ----------------------------
-# Generator
-# ----------------------------
 class Generator(nn.Module):
     def __init__(self, noise_dim=20, output_dim=10):
         super(Generator, self).__init__()
@@ -19,10 +15,6 @@ class Generator(nn.Module):
     def forward(self, z):
         return self.model(z)
 
-
-# ----------------------------
-# Discriminator
-# ----------------------------
 class Discriminator(nn.Module):
     def __init__(self, input_dim=10):
         super(Discriminator, self).__init__()
@@ -37,9 +29,6 @@ class Discriminator(nn.Module):
         return self.model(x)
 
 
-# ----------------------------
-# GAN Training Function
-# ----------------------------
 def train_gan(epochs=500):
     noise_dim = 20
     feature_dim = 10
@@ -53,9 +42,6 @@ def train_gan(epochs=500):
 
     for epoch in range(epochs):
 
-        # -----------------
-        # Train Discriminator
-        # -----------------
         real_data = torch.randn(16, feature_dim)
         real_labels = torch.ones(16, 1)
 
@@ -71,9 +57,6 @@ def train_gan(epochs=500):
         d_loss.backward()
         d_optimizer.step()
 
-        # -----------------
-        # Train Generator
-        # -----------------
         fake_noise = torch.randn(16, noise_dim)
         fake_data = G(fake_noise)
 

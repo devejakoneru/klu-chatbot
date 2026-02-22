@@ -10,7 +10,6 @@ class GANResponseEnhancer:
         noise = torch.randn(1, 20)
         generated_features = self.generator(noise)
 
-        # Just modify style slightly using GAN output
         score = generated_features.mean().item()
 
         if score > 0:

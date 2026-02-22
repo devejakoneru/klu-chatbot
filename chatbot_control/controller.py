@@ -27,15 +27,13 @@ def handle_user_query(query):
     if "erp" in q and ("pay" in q or "payment" in q or "fee" in q):
         return "text", "\n".join(data["fees"]["payment_procedure"])
 
-    # ================= HOSTEL =================
     # ================= HOSTEL FOOD =================
     if "food" in q or "mess" in q or "dining" in q:
         m = data["hostel_rules"]["mess"]
         return "text", f"Breakfast: {m['breakfast']}\nLunch: {m['lunch']}\nDinner: {m['dinner']}"
 
-    # ======================================
     # HOSTEL RULES
-    # ======================================
+
     if "hostel" in q:
         h = data["hostel_rules"]
 
@@ -141,12 +139,9 @@ def handle_user_query(query):
     if "placement" in q or "job" in q or "company" in q:
         return "text", "\n".join(data["placements"]["placement_process"])
 
-    # ================= ADMIN =================
-    # ======================================
     # LEADERSHIP / ADMINISTRATION
-    # ======================================
 
-    if any(word in q for word in ["chancellor", "president", "vice chancellor", "dean", "registrar", "administration"]):
+    if any(word in q for word in ["chancellor", "president", "vice chancellor", "dean", "registrar", "administration","leadership"]):
         a = data["administration"]
 
         response = (
