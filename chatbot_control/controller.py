@@ -1,5 +1,6 @@
 from gan_model.gan_engine import GANResponseEnhancer
 gan_enhancer = GANResponseEnhancer()
+
 import json
 
 DATA_FILE = "knowledge_base/klu_data.json"
@@ -13,30 +14,28 @@ def load_data():
 def handle_user_query(query):
     data = load_data()
     q = query.lower()
+    response = None
+    msg_type = "text"
 
     # ================= LMS & ACADEMIC PORTAL =================
     if "lms" in q and "upload" in q:
-        rules = data["digital_portals"]["lms"]["upload_rules"]
-        return "text", "\n".join(rules)
+        response = "\n".join(data["digital_portals"]["lms"]["upload_rules"])
 
-    if ("academic portal" in q or "academics" in q) and "upload" in q:
-        rules = data["digital_portals"]["academic_portal"]["upload_rules"]
-        return "text", "\n".join(rules)
+    elif ("academic portal" in q or "academics" in q) and "upload" in q:
+        response = "\n".join(data["digital_portals"]["academic_portal"]["upload_rules"])
 
     # ================= ERP PAYMENT =================
-    if "erp" in q and ("pay" in q or "payment" in q or "fee" in q):
-        return "text", "\n".join(data["fees"]["payment_procedure"])
+    elif "erp" in q and ("pay" in q or "payment" in q or "fee" in q):
+        response = "\n".join(data["fees"]["payment_procedure"])
 
     # ================= HOSTEL FOOD =================
-    if "food" in q or "mess" in q or "dining" in q:
+    elif "food" in q or "mess" in q or "dining" in q:
         m = data["hostel_rules"]["mess"]
-        return "text", f"Breakfast: {m['breakfast']}\nLunch: {m['lunch']}\nDinner: {m['dinner']}"
+        response = f"Breakfast: {m['breakfast']}\nLunch: {m['lunch']}\nDinner: {m['dinner']}"
 
-    # HOSTEL RULES
-
-    if "hostel" in q:
+    # ================= HOSTEL =================
+    elif "hostel" in q:
         h = data["hostel_rules"]
-
         response = (
             f"{h['summary']}\n\n"
             f"First Year Timing: {h['timings_attendance']['first_year']}\n"
@@ -53,36 +52,18 @@ def handle_user_query(query):
             f"Vacating: {h['administrative_rules']['vacating']}"
         )
 
-        return "text", response
-
     # ================= EXAMS =================
-    if "exam" in q:
-        return "text", data["exams"]
+    elif "exam" in q:
+        response = data["exams"]
 
     # ================= SCHOLARSHIPS =================
-    if "scholarship" in q:
-        s = data["scholarships"]
-        return "text", "\n".join(s.values())
-
-    # ================= LEADERSHIP =================
-    if any(word in q for word in ["chancellor", "president", "vice chancellor", "dean"]):
-        a = data["administration"]
-        return "text", (
-            f"Chancellor: {a['chancellor_president']}\n"
-            f"Vice Presidents: {', '.join(a['vice_presidents'])}\n"
-            f"Vice Chancellor: {a['vice_chancellor']}\n"
-            f"Registrar: {a['registrar']}"
-        )
-
-    # ================= LIBRARY =================
-    if "library" in q or "book" in q:
-        lib = data["library"]
-        return "text", f"{lib['timings']}\n{lib['books']}"
+    elif "scholarship" in q:
+        response = "\n".join(data["scholarships"].values())
 
     # ================= FEES =================
-    if "fee" in q:
+    elif "fee" in q:
         f = data["fees"]
-        return "text", (
+        response = (
             f"{f['summary']}\n\n"
             f"B.Tech: {f['btech']}\n\n"
             f"MBA: {f['mba']}\n\n"
@@ -92,9 +73,9 @@ def handle_user_query(query):
         )
 
     # ================= RULES =================
-    if "rules" in q:
+    elif "rules" in q:
         r = data["rules"]
-        return "text", (
+        response = (
             f"{r['summary']}\n\n"
             f"Attendance: {r['academic_conduct']['attendance']}\n"
             f"Evaluation: {r['academic_conduct']['evaluation']}\n"
@@ -105,9 +86,9 @@ def handle_user_query(query):
         )
 
     # ================= PORTALS =================
-    if "portal" in q or "website" in q or "link" in q:
+    elif "portal" in q or "website" in q or "link" in q:
         p = data["portals"]
-        return "text", (
+        response = (
             f"Official Website: {p['official_website']}\n"
             f"ERP: {p['erp']}\n"
             f"LMS: {p['lms']}\n"
@@ -116,49 +97,45 @@ def handle_user_query(query):
         )
 
     # ================= IMAGES =================
-    if "campus map" in q:
+    elif "campus map" in q:
         return "image", data["images"]["map"]
 
-    if "campus" in q:
+    elif "campus" in q:
         return "image", data["images"]["campus"]
 
-    if "logo" in q:
+    elif "logo" in q:
         return "image", data["images"]["logo"]
 
     # ================= ATTENDANCE =================
-    if "attendance" in q:
-        return "text", data["attendance_info"]
-    # ================= KLCET / KLEEE =================
-    if "klcet" in q or "kleee" in q or "entrance exam" in q:
-        return "text", data["admissions"]["entrance_exams"]
+    elif "attendance" in q:
+        response = data["attendance_info"]
 
     # ================= ADMISSIONS =================
-    if "admission" in q:
-        return "text", "\n".join(data["admissions"]["process"])
+    elif "admission" in q:
+        response = "\n".join(data["admissions"]["process"])
+
     # ================= PLACEMENTS =================
-    if "placement" in q or "job" in q or "company" in q:
-        return "text", "\n".join(data["placements"]["placement_process"])
+    elif "placement" in q or "job" in q:
+        response = "\n".join(data["placements"]["placement_process"])
 
-    # LEADERSHIP / ADMINISTRATION
-
-    if any(word in q for word in ["chancellor", "president", "vice chancellor", "dean", "registrar", "administration","leadership"]):
+    # ================= LEADERSHIP =================
+    elif any(word in q for word in ["chancellor", "president", "vice chancellor", "dean", "registrar", "administration", "leadership"]):
         a = data["administration"]
-
         response = (
             f"Chancellor / President: {a['chancellor_president']}\n"
             f"Vice-Presidents: {', '.join(a['vice_presidents'])}\n"
             f"Pro-Chancellor: {a['pro_chancellor']}\n"
             f"Vice-Chancellor: {a['vice_chancellor']}\n"
             f"Pro Vice-Chancellors: {', '.join(a['pro_vice_chancellors'])}\n"
-            f"Registrar: {a['registrar']}\n\n"
-            "Key Deans:\n"
+            f"Registrar: {a['registrar']}\n"
         )
 
-        for role, name in a["deans"].items():
-            response += f"{role}: {name}\n"
-
-        response = gan_enhancer.enhance(response)
-        return "text", response
-
     # ================= FALLBACK =================
-    return "text", "I can help with admissions, fees, exams, scholarships, hostel, library, ERP, LMS, and campus info."
+    else:
+        response = "I can help with admissions, fees, exams, scholarships, hostel, library, ERP, LMS, and campus info."
+
+    # APPLY GAN ENHANCEMENT ONLY TO TEXT
+    if msg_type == "text":
+        response = gan_enhancer.enhance(response)
+
+    return msg_type, response
