@@ -1,2 +1,5 @@
 streamlit
-
+SpeechRecognition
+gTTS
+pydub
+torch

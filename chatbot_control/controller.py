@@ -1,3 +1,5 @@
+from gan_model.gan_engine import GANResponseEnhancer
+gan_enhancer = GANResponseEnhancer()
 import json
 
 DATA_FILE = "knowledge_base/klu_data.json"
@@ -160,6 +162,7 @@ def handle_user_query(query):
         for role, name in a["deans"].items():
             response += f"{role}: {name}\n"
 
+        response = gan_enhancer.enhance(response)
         return "text", response
 
     # ================= FALLBACK =================
