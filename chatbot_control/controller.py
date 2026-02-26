@@ -134,7 +134,6 @@ def handle_user_query(query):
     else:
         response = "I can help with admissions, fees, exams, scholarships, hostel, library, ERP, LMS, and campus info."
 
-    # APPLY GAN ENHANCEMENT ONLY TO TEXT
     if msg_type == "text":
         response = gan_enhancer.enhance(response)
 

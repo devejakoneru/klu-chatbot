@@ -16,16 +16,9 @@ def speak(text):
         </script>
     """, unsafe_allow_html=True)
 
-
-# ------------------------------
-# 🚀 MAIN UI
-# ------------------------------
 def start_ui():
     st.set_page_config(page_title="KLU Smart Assistant", layout="centered")
 
-    # ------------------------------
-    # 🎨 PREMIUM CSS
-    # ------------------------------
     st.markdown("""
     <style>
 
@@ -99,9 +92,33 @@ def start_ui():
     <div class="floating f3"></div>
     """, unsafe_allow_html=True)
 
-    # ------------------------------
-    # 📌 SIDEBAR
-    # ------------------------------
+    st.markdown("""
+    <style>
+
+    .bot-corner {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 90px;
+        z-index: 999;
+        animation: floatBot 3s ease-in-out infinite;
+        cursor: pointer;
+    }
+
+    @keyframes floatBot {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-12px); }
+        100% { transform: translateY(0px); }
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    if os.path.exists("assets/chatbot_avatar.png"):
+        st.markdown("""
+            <img src="assets/chatbot_avatar.png" class="bot-corner">
+        """, unsafe_allow_html=True)
+
     with st.sidebar:
         st.title("KLU Smart Assistant 🤖")
         st.write("AI-based Academic Help System")
@@ -116,9 +133,6 @@ def start_ui():
         """)
         st.caption("Powered by Python & Streamlit")
 
-    # ------------------------------
-    # HEADER
-    # ------------------------------
     col1, col2 = st.columns([1, 5])
 
     with col1:
@@ -131,15 +145,9 @@ def start_ui():
 
     st.divider()
 
-    # ------------------------------
-    # SESSION STATE
-    # ------------------------------
     if "chat" not in st.session_state:
         st.session_state.chat = []
 
-    # ------------------------------
-    # DISPLAY CHAT
-    # ------------------------------
     for sender, msg_type, content in st.session_state.chat:
         if sender == "user":
             st.markdown(f"<div class='chat-user'><b>You:</b> {content}</div>", unsafe_allow_html=True)
@@ -150,16 +158,11 @@ def start_ui():
                 if os.path.exists(content):
                     st.image(content, width="stretch")
 
-    # ------------------------------
-    # INPUT
-    # ------------------------------
     with st.form("chat_form", clear_on_submit=True):
         user_input = st.text_input("Ask something:")
         send = st.form_submit_button("Send")
 
-    # ------------------------------
-    # PROCESS MESSAGE
-    # ------------------------------
+
     if send and user_input.strip():
 
         st.session_state.chat.append(("user", "text", user_input))
@@ -167,7 +170,6 @@ def start_ui():
         with st.spinner("🤖 Processing..."):
             msg_type, reply = handle_user_query(user_input)
 
-        # Typing animation for text
         if msg_type == "text":
             placeholder = st.empty()
             typed = ""
