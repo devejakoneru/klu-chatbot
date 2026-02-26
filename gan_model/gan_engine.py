@@ -12,7 +12,9 @@ class GANResponseEnhancer:
 
         score = generated_features.mean().item()
 
+        confidence = round(abs(score) * 100, 2)
+
         if score > 0:
-            return text + "\n\n✨ This response is AI-enhanced using GAN."
+            return text + f"\n\n🔍 GAN Confidence Score: {confidence}% (High Authenticity)"
         else:
-            return text + "\n\n🤖 Generated with adversarial learning mechanism."
+            return text + f"\n\n🔍 GAN Confidence Score: {confidence}% (Moderate Authenticity)"
