@@ -2,7 +2,7 @@ import streamlit as st
 from chatbot_control.controller import handle_user_query
 import os
 import time
-
+import base64
 
 def speak(text):
     safe_text = text.replace('"', "'").replace("\n", " ")
@@ -15,6 +15,7 @@ def speak(text):
         window.speechSynthesis.speak(msg);
         </script>
     """, unsafe_allow_html=True)
+
 
 def start_ui():
     st.set_page_config(page_title="KLU Smart Assistant", layout="centered")
@@ -85,16 +86,6 @@ def start_ui():
         100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
     }
 
-    </style>
-
-    <div class="floating f1"></div>
-    <div class="floating f2"></div>
-    <div class="floating f3"></div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("""
-    <style>
-
     .bot-corner {
         position: fixed;
         bottom: 25px;
@@ -111,12 +102,23 @@ def start_ui():
         100% { transform: translateY(0px); }
     }
 
+    .bot-corner:hover {
+        transform: scale(1.1);
+    }
+
     </style>
+
+    <div class="floating f1"></div>
+    <div class="floating f2"></div>
+    <div class="floating f3"></div>
     """, unsafe_allow_html=True)
 
     if os.path.exists("assets/chatbot_avatar.png"):
-        st.markdown("""
-            <img src="assets/chatbot_avatar.png" class="bot-corner">
+        with open("assets/chatbot_avatar.png", "rb") as img_file:
+            encoded = base64.b64encode(img_file.read()).decode()
+
+        st.markdown(f"""
+            <img src="data:image/png;base64,{encoded}" class="bot-corner">
         """, unsafe_allow_html=True)
 
     with st.sidebar:
@@ -161,7 +163,6 @@ def start_ui():
     with st.form("chat_form", clear_on_submit=True):
         user_input = st.text_input("Ask something:")
         send = st.form_submit_button("Send")
-
 
     if send and user_input.strip():
 
